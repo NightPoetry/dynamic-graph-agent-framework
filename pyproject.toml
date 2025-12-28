@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dynamic-graph-agent-framework"
+version = "0.1.0"
+description = "A flexible dynamic graph-based agent framework with OpenAI-compatible API integration"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["agent", "graph", "llm", "openai", "framework"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "aiohttp>=3.9.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/dynamic-graph-agent-framework"
+Documentation = "https://github.com/yourusername/dynamic-graph-agent-framework#readme"
+Repository = "https://github.com/yourusername/dynamic-graph-agent-framework"
+Issues = "https://github.com/yourusername/dynamic-graph-agent-framework/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dynamic_graph_agent_framework*"]
+
+[tool.setuptools.package-data]
+dynamic_graph_agent_framework = ["*.yaml"]
