@@ -20,12 +20,59 @@ A flexible dynamic graph-based agent framework with OpenAI-compatible API integr
 
 ## Installation
 
-### Install from Source
+### Quick Install (Recommended)
 
+#### 一键安装脚本
+
+使用一键安装脚本可以自动创建虚拟环境并安装开发模式包：
+
+**Windows:**
+```bash
+install.bat
+```
+
+**Linux/Mac:**
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+### Manual Installation
+
+#### 1. 克隆仓库
 ```bash
 git clone https://github.com/NightPoetry/dynamic-graph-agent-framework.git
 cd dynamic-graph-agent-framework
-pip install -e .
+```
+
+#### 2. 创建并激活虚拟环境
+
+**使用项目自带虚拟环境：**
+```bash
+# Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+**使用自定义虚拟环境：**
+```bash
+# 创建自定义虚拟环境（可选）
+python -m venv my_venv
+
+# Windows
+my_venv\Scripts\activate
+
+# Linux/Mac
+source my_venv/bin/activate
+```
+
+#### 3. 安装开发模式包
+```bash
+pip install -e .[dev]
 ```
 
 ### Install from PyPI (Coming Soon)
