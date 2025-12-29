@@ -35,7 +35,7 @@ Dynamic: requires-python
 
 # Dynamic Graph Agent Framework
 
-动态图智能体框架 - A flexible dynamic graph-based agent framework with OpenAI-compatible API integration.
+A flexible dynamic graph-based agent framework with OpenAI-compatible API integration.
 
 ## Features
 
@@ -58,7 +58,7 @@ Dynamic: requires-python
 ### Install from Source
 
 ```bash
-git clone https://github.com/yourusername/dynamic-graph-agent-framework.git
+git clone https://github.com/NightPoetry/dynamic-graph-agent-framework.git
 cd dynamic-graph-agent-framework
 pip install -e .
 ```
@@ -75,21 +75,21 @@ pip install dynamic-graph-agent-framework
 
 ```python
 import asyncio
-from agent_framework import Node, Graph, TransitionCommand, END
+from dynamic_graph_agent_framework import Node, Graph, TransitionCommand, END
 
 async def main():
     def on_enter_start(node, graph):
-        print(f"进入节点: {node.name}")
+        print(f"Entering node: {node.name}")
         graph.global_memory.set("counter", 1)
         return TransitionCommand(target="middle")
     
     def on_enter_middle(node, graph):
-        print(f"进入节点: {node.name}")
+        print(f"Entering node: {node.name}")
         return TransitionCommand(target="end")
     
     def on_enter_end(node, graph):
-        print(f"进入节点: {node.name}")
-        print(f"最终计数器值: {graph.global_memory.get('counter')}")
+        print(f"Entering node: {node.name}")
+        print(f"Final counter value: {graph.global_memory.get('counter')}")
         return TransitionCommand(target=END)
     
     start = Node("start", on_enter=on_enter_start)
@@ -109,7 +109,7 @@ asyncio.run(main())
 
 ```python
 import asyncio
-from agent_framework import (
+from dynamic_graph_agent_framework import (
     AIConfig, OpenAIClient, SystemMessage, UserMessage, 
     text_call, Node, Graph, TransitionCommand, END
 )
@@ -128,8 +128,8 @@ async def main():
     async def on_enter_analyze(node, graph):
         async with client:
             messages = [
-                SystemMessage("你是一个助手。"),
-                UserMessage("你好")
+                SystemMessage("You are an assistant."),
+                UserMessage("Hello")
             ]
             
             response = ""
@@ -153,7 +153,7 @@ asyncio.run(main())
 
 ```python
 import asyncio
-from agent_framework import AIConfig, OpenAIClient, json_call, SystemMessage, UserMessage
+from dynamic_graph_agent_framework import AIConfig, OpenAIClient, json_call, SystemMessage, UserMessage
 
 async def main():
     config = AIConfig.from_dict({
@@ -167,8 +167,8 @@ async def main():
     
     async with client:
         messages = [
-            SystemMessage("你是一个数据生成助手。"),
-            UserMessage("生成一个包含name、age、city的JSON对象。")
+            SystemMessage("You are a data generation assistant."),
+            UserMessage("Generate a JSON object containing name, age, and city.")
         ]
         
         result = await json_call(client, messages)
@@ -207,8 +207,8 @@ Context management object.
 
 ```python
 context = Context()
-context.append(SystemMessage("系统提示"))
-context.append(UserMessage("用户消息"))
+context.append(SystemMessage("System prompt"))
+context.append(UserMessage("User message"))
 messages = context.to_messages()  # Convert to OpenAI format
 ```
 
@@ -365,7 +365,371 @@ python -m pytest tests/test_graph.py
 ## Project Structure
 
 ```
-agent_framework/
+dynamic_graph_agent_framework/
+├── ai_tools/          # AI tools system
+│   ├── config.py
+│   ├── messages.py
+│   ├── client.py
+│   ├── json_call.py
+│   ├── text_call.py
+│   └── context.py
+├── graph/             # Graph framework system
+│   ├── node.py
+│   ├── graph.py
+│   ├── transition.py
+│   ├── memory.py
+│   └── executor.py
+└── __init__.py
+```
+
+## License
+
+MIT License
+
+## Contributing
+
+Welcome to submit Issues and Pull Requests!
+
+## Contact
+
+- GitHub: https://github.com/NightPoetry/dynamic-graph-agent-framework
+- Issues: https://github.com/NightPoetry/dynamic-graph-agent-framework/issues
+
+---
+
+# 动态图智能体框架
+
+一个灵活的基于动态图执行模型和OpenAI兼容API集成的智能体框架。
+
+## 特性
+
+### AI工具系统
+- **消息封装**：提供SystemMessage、UserMessage、AIMessage、ToolMessage等消息类型
+- **OpenAI客户端**：异步支持，兼容OpenAI API格式
+- **JSON调用**：结构化调用，自动解析和修复JSON，支持重试机制
+- **文本调用**：支持流式输出
+- **上下文管理**：Context对象，支持消息追加、获取最后N条消息等操作
+
+### 图框架系统
+- **节点系统**：自动生成唯一ID，支持节点名，静态/动态绑定回调
+- **图执行**：单入口节点，全局记忆，支持节点链接
+- **转移指令**：支持按名称或ID转移，更新全局/局部记忆，支持END终结
+- **执行器**：队列实现（非递归），支持真多分支（并行）和假多分支（BFS）
+- **记忆管理**：全局记忆和节点记忆，支持存储任意对象
+
+## 安装
+
+### 从源码安装
+
+```bash
+git clone https://github.com/NightPoetry/dynamic-graph-agent-framework.git
+cd dynamic-graph-agent-framework
+pip install -e .
+```
+
+### 从PyPI安装（待发布）
+
+```bash
+pip install dynamic-graph-agent-framework
+```
+
+## 快速开始
+
+### 基础图示例
+
+```python
+import asyncio
+from dynamic_graph_agent_framework import Node, Graph, TransitionCommand, END
+
+async def main():
+    def on_enter_start(node, graph):
+        print(f"进入节点: {node.name}")
+        graph.global_memory.set("counter", 1)
+        return TransitionCommand(target="middle")
+    
+    def on_enter_middle(node, graph):
+        print(f"进入节点: {node.name}")
+        return TransitionCommand(target="end")
+    
+    def on_enter_end(node, graph):
+        print(f"进入节点: {node.name}")
+        print(f"最终计数器值: {graph.global_memory.get('counter')}")
+        return TransitionCommand(target=END)
+    
+    start = Node("start", on_enter=on_enter_start)
+    middle = Node("middle", on_enter=on_enter_middle)
+    end = Node("end", on_enter=on_enter_end)
+    
+    graph = Graph(start)
+    graph.link(start, middle)
+    graph.link(middle, end)
+    
+    await graph.execute()
+
+asyncio.run(main())
+```
+
+### AI集成示例
+
+```python
+import asyncio
+from dynamic_graph_agent_framework import (
+    AIConfig, OpenAIClient, SystemMessage, UserMessage, 
+    text_call, Node, Graph, TransitionCommand, END
+)
+
+async def main():
+    config = AIConfig.from_dict({
+        "api_key": "your-api-key",
+        "base_url": "https://api.openai.com/v1",
+        "model": "gpt-4",
+        "temperature": 0.7,
+        "streaming": True
+    })
+    
+    client = OpenAIClient(config)
+    
+    async def on_enter_analyze(node, graph):
+        async with client:
+            messages = [
+                SystemMessage("你是一个助手。"),
+                UserMessage("你好")
+            ]
+            
+            response = ""
+            async for chunk in text_call(client, messages, stream=True):
+                print(chunk, end="", flush=True)
+                response += chunk
+            print()
+            
+            graph.global_memory.set("response", response)
+            return TransitionCommand(target=END)
+    
+    analyze_node = Node("analyze", on_enter=on_enter_analyze)
+    graph = Graph(analyze_node)
+    
+    await graph.execute()
+
+asyncio.run(main())
+```
+
+### JSON调用示例
+
+```python
+import asyncio
+from dynamic_graph_agent_framework import AIConfig, OpenAIClient, json_call, SystemMessage, UserMessage
+
+async def main():
+    config = AIConfig.from_dict({
+        "api_key": "your-api-key",
+        "base_url": "https://api.openai.com/v1",
+        "model": "gpt-4",
+        "temperature": 0.1
+    })
+    
+    client = OpenAIClient(config)
+    
+    async with client:
+        messages = [
+            SystemMessage("你是一个数据生成助手。"),
+            UserMessage("生成一个包含name、age、city的JSON对象。")
+        ]
+        
+        result = await json_call(client, messages)
+        print(f"生成的JSON: {result}")
+
+asyncio.run(main())
+```
+
+## API文档
+
+### AI工具
+
+#### AIConfig
+配置类，用于存储API配置。
+
+```python
+config = AIConfig(
+    api_key="your-key",
+    base_url="https://api.openai.com/v1",
+    model="gpt-4",
+    temperature=0.7,
+    streaming=True,
+    max_retries=3
+)
+```
+
+#### 消息类型
+- `SystemMessage(content)`: 系统消息
+- `UserMessage(content)`: 用户消息
+- `AIMessage(content)`: AI助手消息
+- `ToolMessage(content, tool_call_id)`: 工具消息
+- `CustomMessage(role, content, **kwargs)`: 自定义消息
+
+#### Context
+上下文管理对象。
+
+```python
+context = Context()
+context.append(SystemMessage("系统提示"))
+context.append(UserMessage("用户消息"))
+messages = context.to_messages()  # 转换为OpenAI格式
+```
+
+#### OpenAIClient
+OpenAI兼容的异步客户端。
+
+```python
+async with OpenAIClient(config) as client:
+    # 使用客户端
+    pass
+```
+
+#### json_call
+结构化JSON调用。
+
+```python
+result = await json_call(client, messages)
+```
+
+#### text_call
+文本调用，支持流式。
+
+```python
+async for chunk in text_call(client, messages, stream=True):
+    print(chunk, end="")
+```
+
+### 图框架
+
+#### Node
+节点类。
+
+```python
+def on_enter(node, graph):
+    # 节点逻辑
+    return TransitionCommand(target="next_node")
+
+node = Node("node_name", on_enter=on_enter)
+```
+
+#### Graph
+图类。
+
+```python
+graph = Graph(entry_node, parallel_execution=False)
+graph.link(node_a, node_b)
+await graph.execute()
+```
+
+#### TransitionCommand
+转移指令。
+
+```python
+# 转移到指定节点
+TransitionCommand(target="next_node")
+
+# 更新记忆
+TransitionCommand(
+    target="next_node",
+    update_global={"key": "value"},
+    update_local={"local_key": "local_value"}
+)
+
+# 终结执行
+TransitionCommand(target=END)
+```
+
+#### Memory
+记忆管理。
+
+```python
+memory = Memory()
+memory.set("key", "value")
+value = memory.get("key")
+```
+
+## 高级特性
+
+### 并行执行
+
+```python
+def on_enter_start(node, graph):
+    return [
+        TransitionCommand(target="branch_a"),
+        TransitionCommand(target="branch_b")
+    ]
+
+graph = Graph(start, parallel_execution=True)
+```
+
+### 动态节点创建
+
+```python
+def on_enter_root(node, graph):
+    new_node = Node("dynamic")
+    new_node.set_on_enter(lambda n, g: TransitionCommand(target=END))
+    graph.add_node(new_node)
+    graph.link(node, new_node)
+    return TransitionCommand(target="dynamic")
+```
+
+### 节点生命周期事件
+
+```python
+def on_enter(node, graph):
+    print(f"进入节点: {node.name}")
+    return TransitionCommand(target="next")
+
+def on_exit(node, graph):
+    print(f"离开节点: {node.name}")
+
+node = Node("node_name", on_enter=on_enter, on_exit=on_exit)
+```
+
+## 配置文件
+
+支持从YAML文件加载配置：
+
+```yaml
+api_key: "your-api-key"
+base_url: "https://api.openai.com/v1"
+model: "gpt-4"
+temperature: 0.7
+streaming: true
+max_retries: 3
+timeout: 60
+```
+
+```python
+config = AIConfig.from_yaml("config.yaml")
+```
+
+## 示例
+
+更多示例请参考 [examples/](examples/) 目录：
+- 简单图示例
+- AI集成示例
+- 上下文管理示例
+- JSON调用示例
+- 并行分支示例
+- 动态节点创建示例
+- 记忆管理示例
+
+## 测试
+
+```bash
+# 运行所有测试
+python -m pytest tests/
+
+# 运行特定测试
+python -m pytest tests/test_graph.py
+```
+
+## 项目结构
+
+```
+dynamic_graph_agent_framework/
 ├── ai_tools/          # AI工具系统
 │   ├── config.py
 │   ├── messages.py
@@ -392,5 +756,5 @@ MIT License
 
 ## 联系方式
 
-- GitHub: https://github.com/yourusername/dynamic-graph-agent-framework
-- Issues: https://github.com/yourusername/dynamic-graph-agent-framework/issues
+- GitHub: https://github.com/NightPoetry/dynamic-graph-agent-framework
+- Issues: https://github.com/NightPoetry/dynamic-graph-agent-framework/issues
