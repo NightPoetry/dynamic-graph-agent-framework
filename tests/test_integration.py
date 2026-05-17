@@ -11,7 +11,7 @@ async def test_integration():
     print("=== 集成测试：AI工具 + 图框架 ===")
     
     config = AIConfig.from_dict({
-        "api_key": "sk-1ab795f0057743039e1f9b7b68d24913",
+        "api_key": os.environ.get("DASHSCOPE_API_KEY", ""),
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "model": "qwen-flash",
         "temperature": 0.1,
