@@ -396,7 +396,7 @@ dynamic_graph_agent_framework/
 
 ## License
 
-MIT License
+Apache License 2.0
 
 ## Contributing
 
@@ -760,7 +760,7 @@ dynamic_graph_agent_framework/
 
 ## 许可证
 
-MIT License
+Apache License 2.0
 
 ## 贡献
 
